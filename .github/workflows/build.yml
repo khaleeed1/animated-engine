@@ -1,0 +1,43 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch: # هذا يسمح لك بتشغيل التحويل يدوياً بضغطة زر
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: جلب الكود
+        uses: actions/checkout@v3
+
+      - name: تجهيز بيئة الجافا للأندرويد
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: تجهيز بيئة فلاتر
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: تجهيز بيئة بايثون
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: تثبيت المكتبات
+        run: |
+          python -m pip install --upgrade pip
+          pip install flet
+          pip install -r requirements.txt
+
+      - name: بناء تطبيق APK
+        run: flet build apk
+
+      - name: رفع التطبيق للتحميل
+        uses: actions/upload-artifact@v3
+        with:
+          name: Android-APK
+          path: build/apk/**/*.apk
