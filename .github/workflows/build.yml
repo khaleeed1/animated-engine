@@ -9,10 +9,10 @@ jobs:
     
     steps:
       - name: جلب الكود
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: تجهيز بيئة الجافا للأندرويد
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
